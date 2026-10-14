@@ -26,7 +26,7 @@ async function main() {
   if (price < TARGET) return;
   const qs = new URLSearchParams({
     phone: PHONE,
-    text: `SOL llego a $${price.toFixed(2)} (objetivo $${TARGET}). Hora de vender!`,
+    text: `SOL llego a ${price.toFixed(2)} USD (objetivo ${TARGET} USD). Hora de vender!`,
     apikey: APIKEY,
   });
   const r = await fetch(`https://api.callmebot.com/whatsapp.php?${qs}`);
