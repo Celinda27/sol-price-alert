@@ -1,0 +1,23 @@
+name: SOL price alert
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+permissions:
+  actions: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - id: check
+        run: node sol_alert_once.js
+        env:
+          WA_PHONE: ${{ secrets.WA_PHONE }}
+          WA_APIKEY: ${{ secrets.WA_APIKEY }}
+          TARGET_USD: "120"
+      - name: Desactivar alerta tras avisar
+        if: steps.check.outputs.triggered == 'true'
+        run: gh workflow disable "SOL price alert" --repo "$GITHUB_REPOSITORY"
+        env:
+          GH_TOKEN: ${{ github.token }}
